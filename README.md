@@ -1,5 +1,5 @@
 
-This application simulates leveraged ETF returns.
+The [etf-leverage-simulator](https://pchuck.shinyapps.io/etf-leverage-simulator) synthesizes long-term leveraged ETF returns.
 
 Leveraged ETF's are exchanged traded funds that use derivatives
 and debt to magnify the returns of an underlying index. Such funds
@@ -26,5 +26,8 @@ Then, adjust the **ETF Parameters** to run simulations.
  2. The ***Expense Ratio*** changes the yearly expense overhead of the
     simulated ETF.
 
+Links
 
-
+* [github repository](https://github.com/pchuck/etf-leverage-simulator)
+* [shiny application](https://pchuck.shinyapps.io/etf-leverage-simulator)
+* [slidify presentation](http://pchuck.github.io/etf-leverage-simulator)

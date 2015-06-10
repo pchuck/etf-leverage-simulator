@@ -1,0 +1,122 @@
+---
+title       : Leveraged ETF Returns Simulator
+subtitle    : Coursera, Data Science, Developing Data Products, Course Project
+author      : Patrick Charles
+job         : interval software engineering
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+
+--- .class #id 
+
+## Leveraged ETFs - Intro
+
+### Background
+
+* ETF - exchanged traded funds
+* Leverage - derivatives and debt to magnify returns of an underlying index
+* Funds typically target multipliers of 2x or 3x to amplify daily returns
+* Long-term performance of leveraged ETFs is not well understood
+
+### Goal
+
+Use simulation, analysis and visualization to understand the effects of
+leverage and long-term performance characteristics.
+
+R is used to simulate different leverage scenarios. Shiny is 
+be used to allow users to interact with, understand
+and visualize the long-term effect on performance of different
+leverage multipliers.
+
+--- .class #id
+
+## Leveraged ETF - Returns
+
+### Why are these interesting?
+
+ * Leverage is applied daily, e.g. for 2x.. 
+   * A 5% increase in the underlying index causes a 10% gain for the ETF
+   * A 5% decrease in the underlying index causes a 10% loss for the ETF
+
+ * Straightforward, but over time: compounding effects and price decay due to volatility
+   * e.g. take series of gains and losses: (1) 5%, (2) -10%, (3) -5%, (4) +10%
+   * underlying index @ $100 -> $105 -> $94.50 -> $89.78 -> $98.75
+   * 2x leveraged.. $100 -> $110 -> $88 -> $79.20 -> $95.04
+
+--- .class #id 
+
+## Leveraged ETF - Underlying Index
+
+### R can be used to load historical closing price data, e.g. NASDAQ 
+
+```{r load_index, message=FALSE, warning=FALSE, echo=FALSE, fig.width=10, fig.height=5}
+  library(ggplot2)
+  library(quantmod)
+  xts.daily <- getSymbols(Symbols="^IXIC", src="yahoo",
+                          from="2005-01-01", to="2015-06-01",
+                          env=NULL)
+  df.daily <- as.data.frame(xts.daily)
+  colnames(df.daily) <- c("Open", "High", "Low", "Actual", "Volume")
+  df.daily$Date <- as.Date(rownames(df.daily)) # give date a column
+  ggplot(df.daily, aes(x=Date, y=Actual)) + 
+         geom_line() + 
+         xlab("Date") + ylab("Closing Price") +
+         ggtitle("NASDAQ Composite Daily Closing Price (Actual)")
+```
+
+--- .class #id 
+
+## Leveraged ETF - Simulation
+
+### R can be used to simulate leveraged daily returns
+* by calculating price percent deltas based on historical closing prices
+* applying the deltas (with leverage) to simulate daily ETF returns
+* visualize cumulative leveraged vs. underlying (non-leveraged) returns over time
+
+```{r simulate, message=FALSE, warning=FALSE, echo=FALSE, fig.width=12, fig.height=5}
+  library(reshape2)
+
+  leverage <- 2.0
+  df.daily$Delta <- Delt(df.daily$Actual)[, 1] # daily price deltas
+  df.daily$Simulated <- df.daily$Actual[1] # seed the leverage col
+
+  # calculate daily leveraged returns
+  for(i in 2:nrow(df.daily)) { 
+    previous <- df.daily[i - 1, ]$Simulated # previous value
+    delta <- df.daily[i, ]$Delta # closing price delta
+    df.daily[i, ]$Simulated = # calculated, next leveraged price
+    previous + previous * delta * leverage
+  }
+
+  # render a plot of actual vs. simulated returns
+  df.melted <- melt(df.daily, id.vars=c("Date"))
+  df.melted <- df.melted[df.melted$variable == 'Actual' |
+                         df.melted$variable == 'Simulated', ]
+  colnames(df.melted) <- c("Date", "Price", "Value")
+  ggplot(df.melted, aes(x=Date, y=Value, color=Price)) +
+    geom_line() + 
+    xlab("Date") + ylab("Closing Price") +
+    ggtitle("NASDAQ Actual vs. 2x Leveraged")
+```
+
+--- .class #id
+
+## Leveraged ETF - Interactive Simulation
+
+### As a Shiny Application..
+
+* Allows a user to...
+  * Select from a variety of underlying securities
+  * Load historical data for a date range of interest
+  * Interactively modify the ETF leverage multipliers
+  * Instantly see the simulated performance of leveraged vs. non-leveraged funds
+
+### Try It!
+* shinyapps.io: [etf-leverage-simulator](https://pchuck.shinyapps.io/etf-leverage-simulator)
+
+### The Source Code
+* github.com: [pchuck/etf-leverage-simulator](https://github.com/pchuck/etf-leverage-simulator)
+

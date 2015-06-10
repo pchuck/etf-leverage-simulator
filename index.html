@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leveraged ETF Returns Simulator</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Leveraged ETF Returns Simulator">
+  <meta name="author" content="Patrick Charles">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Leveraged ETF Returns Simulator</h1>
+    <h2>Coursera, Data Science, Developing Data Products, Course Project</h2>
+    <p>Patrick Charles<br/>interval software engineering</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Leveraged ETFs - Intro</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Background</h3>
+
+<ul>
+<li>ETF - exchanged traded funds</li>
+<li>Leverage - derivatives and debt to magnify returns of an underlying index</li>
+<li>Funds typically target multipliers of 2x or 3x to amplify daily returns</li>
+<li>Long-term performance of leveraged ETFs is not well understood</li>
+</ul>
+
+<h3>Goal</h3>
+
+<p>Use simulation, analysis and visualization to understand the effects of
+leverage and long-term performance characteristics.</p>
+
+<p>R is used to simulate different leverage scenarios. Shiny is 
+be used to allow users to interact with, understand
+and visualize the long-term effect on performance of different
+leverage multipliers.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Leveraged ETF - Returns</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Why are these interesting?</h3>
+
+<ul>
+<li><p>Leverage is applied daily, e.g. for 2x.. </p>
+
+<ul>
+<li>A 5% increase in the underlying index causes a 10% gain for the ETF</li>
+<li>A 5% decrease in the underlying index causes a 10% loss for the ETF</li>
+</ul></li>
+<li><p>Straightforward, but over time: compounding effects and price decay due to volatility</p>
+
+<ul>
+<li>e.g. take series of gains and losses: (1) 5%, (2) -10%, (3) -5%, (4) +10%</li>
+<li>underlying index @ $100 -&gt; $105 -&gt; $94.50 -&gt; $89.78 -&gt; $98.75</li>
+<li>2x leveraged.. $100 -&gt; $110 -&gt; $88 -&gt; $79.20 -&gt; $95.04</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Leveraged ETF - Underlying Index</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>R can be used to load historical closing price data, e.g. NASDAQ</h3>
+
+<p><img src="assets/fig/load_index-1.png" alt="plot of chunk load_index"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Leveraged ETF - Simulation</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>R can be used to simulate leveraged daily returns</h3>
+
+<ul>
+<li>by calculating price percent deltas based on historical closing prices</li>
+<li>applying the deltas (with leverage) to simulate daily ETF returns</li>
+<li>visualize cumulative leveraged vs. underlying (non-leveraged) returns over time</li>
+</ul>
+
+<p><img src="assets/fig/simulate-1.png" alt="plot of chunk simulate"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Leveraged ETF - Interactive Simulation</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>As a Shiny Application..</h3>
+
+<ul>
+<li>Allows a user to...
+
+<ul>
+<li>Select from a variety of underlying securities</li>
+<li>Load historical data for a date range of interest</li>
+<li>Interactively modify the ETF leverage multipliers</li>
+<li>Instantly see the simulated performance of leveraged vs. non-leveraged funds</li>
+</ul></li>
+</ul>
+
+<h3>Try It!</h3>
+
+<ul>
+<li>shinyapps.io: <a href="https://pchuck.shinyapps.io/etf-leverage-simulator">etf-leverage-simulator</a></li>
+</ul>
+
+<h3>The Source Code</h3>
+
+<ul>
+<li>github.com: <a href="https://github.com/pchuck/etf-leverage-simulator">pchuck/etf-leverage-simulator</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Leveraged ETFs - Intro'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Leveraged ETF - Returns'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Leveraged ETF - Underlying Index'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Leveraged ETF - Simulation'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Leveraged ETF - Interactive Simulation'>
+         5
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

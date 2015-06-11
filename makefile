@@ -7,8 +7,8 @@
 create_env:
 	tmuxinator start r-sandbox
 
-render:
-	./R/rmdToHtml.R dp_project
+prereqs:
+	R -e "install.packages(c('devtools', 'shiny'), repos='http://cran.us.r-project.org'); devtools::install_github('rstudio/shinyapps')"
 
 run_app:
 	R -e "shiny::runApp('../etf-leverage-simulator', display.mode='showcase')"

@@ -16,6 +16,7 @@ run_app:
 deploy_app:
 	R -e "shinyapps::deployApp('../etf-leverage-simulator')"
 
+# slides (apply on branch gh-pages)
 slidify:
 	R -e "slidify::slidify('index.Rmd')"
 

@@ -75,9 +75,16 @@ effect on performance of different leverage multipliers, utilizing Shiny.</li>
     <h2>Leveraged ETF - Underlying Index</h2>
   </hgroup>
   <article data-timings="">
-    <h3>R can be used to load historical closing price data, e.g. NASDAQ</h3>
+    <p><img src="assets/fig/load_index-1.png" alt="plot of chunk load_index"> </p>
 
-<p><img src="assets/fig/load_index-1.png" alt="plot of chunk load_index"> </p>
+<pre><code class="r">  # calculate daily leveraged returns
+  for(i in 2:nrow(df.daily)) { 
+    previous &lt;- df.daily[i - 1, ]$Simulated # previous value
+    delta &lt;- df.daily[i, ]$Delta # closing price delta
+    df.daily[i, ]$Simulated = # calculated, next leveraged price
+    previous + previous * delta * leverage
+  }
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -96,7 +103,7 @@ effect on performance of different leverage multipliers, utilizing Shiny.</li>
 <li>visualize cumulative leveraged vs. underlying (non-leveraged) returns over time</li>
 </ul>
 
-<p><img src="assets/fig/simulate-1.png" alt="plot of chunk simulate"> </p>
+<p><img src="assets/fig/render-1.png" alt="plot of chunk render"> </p>
 
   </article>
   <!-- Presenter Notes -->

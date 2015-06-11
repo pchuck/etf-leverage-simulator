@@ -34,8 +34,6 @@ effect on performance of different leverage multipliers, utilizing Shiny.
 
 ## Leveraged ETF - Underlying Index
 
-### R can be used to load historical closing price data, e.g. NASDAQ 
-
 ```{r load_index, message=FALSE, warning=FALSE, echo=FALSE, fig.width=10, fig.height=5}
   library(ggplot2)
   library(quantmod)
@@ -51,6 +49,24 @@ effect on performance of different leverage multipliers, utilizing Shiny.
          ggtitle("NASDAQ Composite Daily Closing Price (Actual)")
 ```
 
+```{r clean, message=FALSE, warning=FALSE, echo=FALSE}
+  library(reshape2)
+
+  leverage <- 2.0
+  df.daily$Delta <- Delt(df.daily$Actual)[, 1] # daily price deltas
+  df.daily$Simulated <- df.daily$Actual[1] # seed the leverage col
+```
+
+```{r simulate, message=FALSE, warning=FALSE}
+  # calculate daily leveraged returns
+  for(i in 2:nrow(df.daily)) { 
+    previous <- df.daily[i - 1, ]$Simulated # previous value
+    delta <- df.daily[i, ]$Delta # closing price delta
+    df.daily[i, ]$Simulated = # calculated, next leveraged price
+    previous + previous * delta * leverage
+  }
+```
+
 --- .class #id 
 
 ## Leveraged ETF - Simulation
@@ -60,21 +76,7 @@ effect on performance of different leverage multipliers, utilizing Shiny.
 * applying the deltas (with leverage) to simulate daily ETF returns
 * visualize cumulative leveraged vs. underlying (non-leveraged) returns over time
 
-```{r simulate, message=FALSE, warning=FALSE, echo=FALSE, fig.width=12, fig.height=5}
-  library(reshape2)
-
-  leverage <- 2.0
-  df.daily$Delta <- Delt(df.daily$Actual)[, 1] # daily price deltas
-  df.daily$Simulated <- df.daily$Actual[1] # seed the leverage col
-
-  # calculate daily leveraged returns
-  for(i in 2:nrow(df.daily)) { 
-    previous <- df.daily[i - 1, ]$Simulated # previous value
-    delta <- df.daily[i, ]$Delta # closing price delta
-    df.daily[i, ]$Simulated = # calculated, next leveraged price
-    previous + previous * delta * leverage
-  }
-
+```{r render, message=FALSE, warning=FALSE, echo=FALSE, fig.width=12, fig.height=5}
   # render a plot of actual vs. simulated returns
   df.melted <- melt(df.daily, id.vars=c("Date"))
   df.melted <- df.melted[df.melted$variable == 'Actual' |

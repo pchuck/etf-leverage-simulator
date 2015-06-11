@@ -11,9 +11,11 @@ prereqs:
 	R -e "install.packages(c('devtools', 'shiny'), repos='http://cran.us.r-project.org'); devtools::install_github('rstudio/shinyapps')"
 	R -e "devtools::install_github('ramnathv/slidify'); devtools::install_github('ramnathv/slidifyLibraries');"
 
+# run shiny server locally
 run_app:
 	R -e "shiny::runApp('../etf-leverage-simulator', display.mode='showcase')"
 
+# deploy to shinyapps.io
 deploy_app:
 	R -e "shinyapps::deployApp('../etf-leverage-simulator')"
 

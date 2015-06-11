@@ -1,5 +1,6 @@
-# Coursera, Developing Data Products, Final Project
+# etf-leverage-simulator
 #
+# Coursera, Developing Data Products, Final Project
 # shiny application and slidify presentation
 #
 
@@ -7,6 +8,7 @@
 create_env:
 	tmuxinator start r-sandbox
 
+# install prerequisite packages
 prereqs:
 	R -e "install.packages(c('devtools', 'shiny'), repos='http://cran.us.r-project.org'); devtools::install_github('rstudio/shinyapps')"
 	R -e "devtools::install_github('ramnathv/slidify'); devtools::install_github('ramnathv/slidifyLibraries');"
@@ -23,6 +25,7 @@ deploy_app:
 slidify:
 	R -e "slidify::slidify('index.Rmd')"
 
+# view slides locally
 view_slides:
 	R -e "browseURL('index.html')"
 

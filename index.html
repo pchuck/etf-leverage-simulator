@@ -53,43 +53,17 @@
 <li>Leverage - derivatives and debt to magnify returns of an underlying index</li>
 <li>Funds typically target multipliers of 2x or 3x to amplify daily returns</li>
 <li>Long-term performance of leveraged ETFs is not well understood</li>
+<li>Over time, compounding effects and price decay due to volatility</li>
 </ul>
 
 <h3>Goal</h3>
 
-<p>Use simulation, analysis and visualization to understand the effects of
-leverage and long-term performance characteristics.</p>
-
-<p>R is used to simulate different leverage scenarios. Shiny is 
-be used to allow users to interact with, understand
-and visualize the long-term effect on performance of different
-leverage multipliers.</p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Leveraged ETF - Returns</h2>
-  </hgroup>
-  <article data-timings="">
-    <h3>Why are these interesting?</h3>
-
 <ul>
-<li><p>Leverage is applied daily, e.g. for 2x.. </p>
-
-<ul>
-<li>A 5% increase in the underlying index causes a 10% gain for the ETF</li>
-<li>A 5% decrease in the underlying index causes a 10% loss for the ETF</li>
-</ul></li>
-<li><p>Straightforward, but over time: compounding effects and price decay due to volatility</p>
-
-<ul>
-<li>e.g. take series of gains and losses: (1) 5%, (2) -10%, (3) -5%, (4) +10%</li>
-<li>underlying index @ $100 -&gt; $105 -&gt; $94.50 -&gt; $89.78 -&gt; $98.75</li>
-<li>2x leveraged.. $100 -&gt; $110 -&gt; $88 -&gt; $79.20 -&gt; $95.04</li>
-</ul></li>
+<li>Simulate different scenarios to help undestand the effects of
+leverage on fund performance, utilizing R and Rmd for reproducible data
+processing and analysis.</li>
+<li>Allow users to interact with and visualize the long-term
+effect on performance of different leverage multipliers, utilizing Shiny.</li>
 </ul>
 
   </article>
@@ -174,26 +148,20 @@ leverage multipliers.</p>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=2 title='Leveraged ETF - Returns'>
+        data-slide=2 title='Leveraged ETF - Underlying Index'>
          2
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=3 title='Leveraged ETF - Underlying Index'>
+        data-slide=3 title='Leveraged ETF - Simulation'>
          3
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='Leveraged ETF - Simulation'>
+        data-slide=4 title='Leveraged ETF - Interactive Simulation'>
          4
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=5 title='Leveraged ETF - Interactive Simulation'>
-         5
       </a>
     </li>
   </ul>

@@ -20,31 +20,15 @@ knit        : slidify::knit2slides
 * Leverage - derivatives and debt to magnify returns of an underlying index
 * Funds typically target multipliers of 2x or 3x to amplify daily returns
 * Long-term performance of leveraged ETFs is not well understood
+* Over time, compounding effects and price decay due to volatility
 
 ### Goal
 
-Use simulation, analysis and visualization to understand the effects of
-leverage and long-term performance characteristics.
-
-R is used to simulate different leverage scenarios. Shiny is 
-be used to allow users to interact with, understand
-and visualize the long-term effect on performance of different
-leverage multipliers.
-
---- .class #id
-
-## Leveraged ETF - Returns
-
-### Why are these interesting?
-
- * Leverage is applied daily, e.g. for 2x.. 
-   * A 5% increase in the underlying index causes a 10% gain for the ETF
-   * A 5% decrease in the underlying index causes a 10% loss for the ETF
-
- * Straightforward, but over time: compounding effects and price decay due to volatility
-   * e.g. take series of gains and losses: (1) 5%, (2) -10%, (3) -5%, (4) +10%
-   * underlying index @ $100 -> $105 -> $94.50 -> $89.78 -> $98.75
-   * 2x leveraged.. $100 -> $110 -> $88 -> $79.20 -> $95.04
+* Simulate different scenarios to help undestand the effects of
+leverage on fund performance, utilizing R and Rmd for reproducible data
+processing and analysis.
+* Allow users to interact with and visualize the long-term
+effect on performance of different leverage multipliers, utilizing Shiny.
 
 --- .class #id 
 

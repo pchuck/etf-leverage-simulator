@@ -9,6 +9,7 @@ create_env:
 
 prereqs:
 	R -e "install.packages(c('devtools', 'shiny'), repos='http://cran.us.r-project.org'); devtools::install_github('rstudio/shinyapps')"
+	R -e "devtools::install_github('ramnathv/slidify'); devtools::install_github('ramnathv/slidifyLibraries');"
 
 run_app:
 	R -e "shiny::runApp('../etf-leverage-simulator', display.mode='showcase')"

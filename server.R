@@ -8,7 +8,8 @@ shinyServer(
     function(input, output, session) {
         source <- "yahoo" # source for underlying daily closing prices
         tradingDays <- 252 # average number of trading days in a year
-
+        options("getSymbols.warning4.0"=FALSE)
+        
         v <- reactiveValues(xts.daily = NULL, symbol = NULL, 
                             endDate = NULL, startDate = NULL,
                             leveragedReturn = NULL, actualReturn = NULL)
@@ -23,7 +24,8 @@ shinyServer(
             try( # use quantmod to fetch historical data
                 v$xts.daily <- getSymbols(Symbols=input$symbol, src=source,
                                           from=v$startDate, to=v$endDate,
-                                          env=NULL)
+                                          # split-adjust historical data
+                                          auto.assign=FALSE, adjust=TRUE)
             )
         })
         
@@ -34,8 +36,9 @@ shinyServer(
             dailyExpense <- expenseRatio / tradingDays # convert exp to daily
 
             df.daily <- as.data.frame(v$xts.daily)
-            # simplify the row names, and rename 'Close' to 'Actual'
-            colnames(df.daily) <- c("Open", "High", "Low", "Actual", "Volume")
+            # simplify the row names
+            colnames(df.daily) <- # rename close to 'actual' (v. 'simulated')
+                c("Open", "High", "Low", "Actual", "Volume")
             df.daily$Date <- as.Date(rownames(df.daily)) # give date a column
             df.daily$Delta <- Delt(df.daily$Actual)[, 1] # daily price deltas
             df.daily$Simulated <- df.daily$Actual[1] # seed the leverage col

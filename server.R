@@ -32,26 +32,22 @@ shinyServer(
         # simulation
         output$simulationPlot <- renderPlot({
             if(is.null(v$xts.daily)) return() # bail if data not yet loaded
-            expenseRatio <- input$expense / 100 # convert percentage to factor
-            dailyExpense <- expenseRatio / tradingDays # convert exp to daily
+            expense.ratio <- input$expense / 100 # convert percentage to factor
+            expense.daily <- expense.ratio / tradingDays # convert exp to daily
 
             df.daily <- as.data.frame(v$xts.daily)
             # simplify the row names
             colnames(df.daily) <- # rename close to 'actual' (v. 'simulated')
                 c("Open", "High", "Low", "Actual", "Volume")
-            df.daily$Date <- as.Date(rownames(df.daily)) # give date a column
-            df.daily$Delta <- Delt(df.daily$Actual)[, 1] # daily price deltas
-            df.daily$Simulated <- df.daily$Actual[1] # seed the leverage col
-
+            df.daily$Date <- index(v$xts.daily) # date column
+            # 1x daily returns, w. 0 substituted for NA for initial day
+            df.daily$Delta <- c(0, Delt(df.daily$Actual)[-1, 1])
+            
             # calculate daily leveraged returns
-            for(i in 2:nrow(df.daily)) { 
-                previous <- df.daily[i - 1, ]$Simulated # previous value
-                delta <- df.daily[i, ]$Delta # closing price delta
-                df.daily[i, ]$Simulated = # calculated, next leveraged price
-                    previous + previous * delta * input$leverage -
-                        previous * dailyExpense
-            }
-
+            df.daily$Simulated <-
+              cumprod(1 + (df.daily$Delta * input$leverage - expense.daily)) *
+                 df.daily$Actual[1]
+            
             # render a plot of actual vs. simulated returns
             title <- paste(v$symbol, ": Actual vs. Simulated ",
                            input$leverage, "x Leverage", sep="")
@@ -62,7 +58,6 @@ shinyServer(
             colnames(df.melted) <- c("Date", "Price", "Value")
             ggplot(df.melted, aes(x=Date, y=Value, color=Price)) +
                 geom_line() + 
-#                stat_smooth(method="loess", alpha=0.5, level=0.75) + 
                 xlab(paste("Date (", range, ")", sep="")) + 
                 ylab("Closing Price") + ggtitle(title)
         })

@@ -31,3 +31,4 @@ Links
 * [github repository](https://github.com/pchuck/etf-leverage-simulator)
 * [shiny application](https://pchuck.shinyapps.io/etf-leverage-simulator)
 * [slidify presentation](http://pchuck.github.io/etf-leverage-simulator)
+* [detailed analysis](http://github.com/pchuck/etf-leverage-comparator)
